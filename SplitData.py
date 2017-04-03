@@ -34,6 +34,8 @@ for item in jsonForm:
     featSet = {}
     # initialize the values
     featSet['id'] = item['id']
+    featSet['topic'] = item['topic']
+    featSet['genre'] = item['genre']
     featSet['adjective_count'] = 0
     featSet['noun_count'] = 0
     featSet['verb_count'] = 0
