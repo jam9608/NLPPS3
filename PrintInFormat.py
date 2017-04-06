@@ -19,4 +19,8 @@ with open(r"C:\Users\Jared Wagner\PycharmProjects\ProblemSet3\PS3_training_data.
 for item in DictList:
     print(item['id'] + '\t' + item['sentence'] + '\t' + item['polarity'] + '\t' + item['topic'] + '\t' + item['genre'])
 
+with open(r'Results.txt', 'w') as out:
+    for item in DictList:
+        out.write(item['id'] + '\t' + item['sentence'] + '\t' + item['polarity'] + '\t' + item['topic'] + '\t' + item[
+            'genre'] + '\n')
 

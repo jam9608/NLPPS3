@@ -2,13 +2,25 @@ import re
 import os
 import nltk
 import pickle
+import argparse
 from nltk.tag.stanford import StanfordNERTagger
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-i', '--input', type=str, help='The input text file, training or test', nargs='+')
+parser.add_argument('-o', '--output', type=str, help='The output binary file, training or test', nargs='+')
+args = parser.parse_args()
+
+
+if args.input is None or args.output is None:
+    print('Please specify input text file and output binary file')
+    exit()
 
 # sets of data pulled from string put here
 jsonForm = []
 
 # read the file and pull out the data into a set
-with open(r"PS3_training_data.txt") as file:
+with open(str(args.input), 'r') as file:
     lines = file.readlines()
     for line in lines:
         temp = re.split(r'\t', line)
@@ -75,6 +87,6 @@ for item in jsonForm:
     print(featSet)
 
 # print to file
-with open(r'PS3_training_data_features.bin', 'wb') as file:
+with open(args.output, 'wb') as file:
     pickle.dump(features, file)
 
