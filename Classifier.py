@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 import numpy
+import re
 
 def ReadData():
     i = 0
-    training = open('PS3_training_data.txt').read()
+    with open(r"C:\Users\Jared Wagner\PycharmProjects\ProblemSet3\PS3_training_data.txt") as file:
+        training = file.readlines()
+
     #dataset = numpy.zeros((2564,3),numpy.str)
     trainingData = ["" for x in range(2001)]
     
@@ -13,7 +16,7 @@ def ReadData():
     testTarget = ["" for x in range(564)]
     for line in training[:2000]:
         ##Line sentance Pos/neg event genre \n##
-        data = line.split('\t')
+        data = re.split(r'\t', line)
         #dataset[i] = data[2:-1]
         #print(data[1])
         trainingData[i] = data[1]
@@ -23,14 +26,15 @@ def ReadData():
         
     i=0
     for line in training[2000:]:
-        data = line.split('\t')
+        data = re.split(r'\t', line)
         #dataset[i] = data[2:-1]
         #print(data[1])
         testData[i] = data[1]
         testTarget[i] = data[4]
+
+        i+=1
         
-        
-    training.close()
+
     print(i)
     #print(len(actualData))
     #print(len(dataset))
