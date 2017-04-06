@@ -4,7 +4,7 @@ import re
 
 def ReadData():
     i = 0
-    with open(r"C:\Users\Jared Wagner\PycharmProjects\ProblemSet3\PS3_training_data.txt") as file:
+    with open(r"C:\Users\John\PS3_training_data.txt") as file:
         training = file.readlines()
 
     #dataset = numpy.zeros((2564,3),numpy.str)
@@ -52,11 +52,16 @@ def ReadData():
     
     from sklearn.naive_bayes import MultinomialNB
     clf = MultinomialNB().fit(X_train_tf,trainingTarget)
-    docs_new = ["I don't like it", "It was good"]
     x_new_counts = count_vect.transform(testData)
     x_new_tfidf = tf_transformer.transform(x_new_counts)
     predicted = clf.predict(x_new_tfidf)
     print(numpy.mean(predicted == testTarget))
+    
+    with open('output.txt','w') as outputfile:
+        z = 0
+        for prediction in predicted:
+            outputfile.write(testData[z] + '\t' + prediction + '\t\n')
+            z+=1
     
     
    
