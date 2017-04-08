@@ -15,7 +15,7 @@ parser.add_argument('-a', '--array', type=str, help='The output binary feature a
 args = parser.parse_args()
 
 
-if args.input is None or args.output is None or args.zip is None or args.jar is None or args.java is None or args.array is None:
+if args.input is None or args.output is None or args.array is None:
     print('Please specify all required files')
     exit()
 
@@ -37,11 +37,6 @@ with open(' '.join(args.input), 'r') as file:
 
 # store all the features
 features = []
-
-# configure the named entity recognizer
-nltk.internals.config_java(' '.join(args.java))
-os.environ['JAVAHOME'] = ' '.join(args.java)
-st = StanfordNERTagger(' '.join(args.zip), ' '.join(args.jar), encoding='utf-8')
 
 
 # method for feature generation
@@ -68,8 +63,8 @@ def worker(lb, ub):
         entCount = 0
         # generate the features for a word scale
         tags = nltk.pos_tag(item['sentence'].split())
-        nes = nltk.ne_chunk(tags, binary=True)
         '''
+        nes = nltk.ne_chunk(tags, binary=True)
         for tree in nes.subtrees():
             if tree.label() == 'NE':
                 entCount += 1
@@ -100,7 +95,7 @@ def worker(lb, ub):
 print('all values read from file, now generating features')
 start = time.time()
 threads = []
-count = 5
+count = 2
 breakcount = int(len(jsonForm)/count)
 # create threads for feature generation
 for i in range(0, count):
@@ -110,7 +105,7 @@ for i in range(0, count):
     threads.append(t)
 # get the remaining lines
 low = high
-high = len(jsonForm)-1
+high = len(jsonForm)
 t = threading.Thread(target=worker, args=(low, high), name='POS worker thread: remainder')
 threads.append(t)
 print('Created threads, now running')
