@@ -1,11 +1,9 @@
 import re
-import os
 import nltk
 import time
 import pickle
 import argparse
 import threading
-from nltk.tag.stanford import StanfordNERTagger
 
 
 parser = argparse.ArgumentParser()
