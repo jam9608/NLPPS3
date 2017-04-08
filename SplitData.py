@@ -9,15 +9,16 @@ from nltk.tag.stanford import StanfordNERTagger
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input', type=str, help='The input text file, training or test', nargs='+')
-parser.add_argument('-o', '--output', type=str, help='The output binary file, training or test', nargs='+')
+parser.add_argument('-o', '--output', type=str, help='The output binary file feature set', nargs='+')
+parser.add_argument('-a', '--array', type=str, help='The output binary feature array', nargs='+')
 parser.add_argument('-z', '--zip', type=str, help='The zip archive that the stanford POS tagger comes from', nargs='+')
 parser.add_argument('-r', '--jar', type=str, help='The jar file that is the stanford POS tagger', nargs='+')
 parser.add_argument('-j', '--java', type=str, help='The path to your java executable on the computer', nargs='+')
 args = parser.parse_args()
 
 
-if args.input is None or args.output is None or args.zip is None or args.jar is None or args.java is None:
-    print('Please specify input text file and output binary file')
+if args.input is None or args.output is None or args.zip is None or args.jar is None or args.java is None or args.array is None:
+    print('Please specify all required files')
     exit()
 
 # sets of data pulled from string put here
@@ -49,7 +50,7 @@ start = time.time()
 counter = 0
 
 # loop each sentence and generate the features
-for item in jsonForm[0:5]:
+for item in jsonForm:
     # store features here
     featSet = {}
     # initialize the values
@@ -95,12 +96,22 @@ for item in jsonForm[0:5]:
     # display
     counter += 1
     num = counter / (len(jsonForm)/20)
-    print('\r0%' + ('=' * int(num)) + ('_' * int(20-num)) + '100% -> ' + str(num/len(jsonForm)) + '%', end='', flush=True)
+    print('\r0%' + ('=' * int(num)) + ('_' * int(20-num)) + '100% -> ' + str(counter/len(jsonForm)*100) + '%', end='', flush=True)
 
 print('\nfeatures have been generated')
 print('time elapsed: ' + str(time.time() - start))
 
+D2 = [[]]
+for item in features:
+    D2.append([item['id'], item['sentence'], item['topic'], item['genre'], item['polarity'], item['adjective_count'],
+    item['noun_count'], item['verb_count'], item['punctuation_count'], item['number_count'], item['sentence_length'],
+    int(item['start_with_personal_pronoun']), item['word_count'], item['named_entity']])
+
 # print to file
 with open(' '.join(args.output), 'wb') as file:
     pickle.dump(features, file)
+
+# print to file array
+with open(' '.join(args.array), 'wb') as file:
+    pickle.dump(D2, file)
 
