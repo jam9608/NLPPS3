@@ -6,7 +6,7 @@ def ReadData():
     i = 0
     with open(r"C:\Users\John\PS3_training_data.txt") as file:
         training = file.readlines()
-
+    
     #dataset = numpy.zeros((2564,3),numpy.str)
     trainingData = ["" for x in range(2001)]
     
@@ -16,11 +16,11 @@ def ReadData():
     testTarget = ["" for x in range(564)]
     for line in training[:2000]:
         ##Line sentance Pos/neg event genre \n##
-        data = re.split(r'\t', line)
+        data = re.split('\t+', line)
         #dataset[i] = data[2:-1]
         #print(data[1])
         trainingData[i] = data[1]
-        trainingTarget[i] = data[4]
+        trainingTarget[i] = data[2]
         
         i+=1
         
@@ -31,10 +31,10 @@ def ReadData():
         #print(data[1])
         testData[i] = data[1]
         testTarget[i] = data[4]
-
+    
         i+=1
         
-
+    
     print(i)
     #print(len(actualData))
     #print(len(dataset))
@@ -62,7 +62,14 @@ def ReadData():
         for prediction in predicted:
             outputfile.write(testData[z] + '\t' + prediction + '\t\n')
             z+=1
+            
+    from sklearn import svm
+    C=1.0
+    svc = svm.SVC(kernel='linear', C=C).fit(X_train_tf, trainingTarget)
+    predicted = svc.predict(x_new_tfidf)
+    print(numpy.mean(predicted == testTarget))
     
+    print(svc.decision_function(X_train_tf[i]))
     
    
     
