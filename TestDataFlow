@@ -1,0 +1,8 @@
+Ideas for test data program flow
+
+-Generate the features using the SplitData.py
+-Convert the features sets of the test data to an array for classification
+-Run the test data through the classifier to get the classifications
+-Print the results of the classification to a file using PrintInFormat.py
+-Compare the results to the provided using np.mean method
+-Generate a confusion matrix

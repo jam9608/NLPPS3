@@ -1,6 +1,7 @@
 import re
 import os
 import nltk
+import time
 import pickle
 import argparse
 from nltk.tag.stanford import StanfordNERTagger
@@ -9,10 +10,13 @@ from nltk.tag.stanford import StanfordNERTagger
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input', type=str, help='The input text file, training or test', nargs='+')
 parser.add_argument('-o', '--output', type=str, help='The output binary file, training or test', nargs='+')
+parser.add_argument('-z', '--zip', type=str, help='The zip archive that the stanford POS tagger comes from', nargs='+')
+parser.add_argument('-r', '--jar', type=str, help='The jar file that is the stanford POS tagger', nargs='+')
+parser.add_argument('-j', '--java', type=str, help='The path to your java executable on the computer', nargs='+')
 args = parser.parse_args()
 
 
-if args.input is None or args.output is None:
+if args.input is None or args.output is None or args.zip is None or args.jar is None or args.java is None:
     print('Please specify input text file and output binary file')
     exit()
 
@@ -20,7 +24,7 @@ if args.input is None or args.output is None:
 jsonForm = []
 
 # read the file and pull out the data into a set
-with open(str(args.input), 'r') as file:
+with open(' '.join(args.input), 'r') as file:
     lines = file.readlines()
     for line in lines:
         temp = re.split(r'\t', line)
@@ -36,16 +40,21 @@ with open(str(args.input), 'r') as file:
 features = []
 
 # configure the named entity recognizer
-nltk.internals.config_java(r'C:\Program Files\Java\jdk1.8.0_74\bin\java.exe')
-os.environ['JAVAHOME'] = r'C:\Program Files\Java\jdk1.8.0_74\bin\java.exe'
-st = StanfordNERTagger(r'C:\Users\Jared Wagner\PycharmProjects\ProblemSet3\english.all.3class.distsim.crf.ser.gz', r'C:\Users\Jared Wagner\PycharmProjects\ProblemSet3\stanford-ner.jar', encoding='utf-8')
+nltk.internals.config_java(' '.join(args.java))
+os.environ['JAVAHOME'] = ' '.join(args.java)
+st = StanfordNERTagger(' '.join(args.zip), ' '.join(args.jar), encoding='utf-8')
+
+print('all values read from file, now generating features')
+start = time.time()
+counter = 0
 
 # loop each sentence and generate the features
-for item in jsonForm:
+for item in jsonForm[0:5]:
     # store features here
     featSet = {}
     # initialize the values
     featSet['id'] = item['id']
+    featSet['sentence'] = item['sentence']
     featSet['topic'] = item['topic']
     featSet['genre'] = item['genre']
     featSet['polarity'] = item['polarity']
@@ -84,9 +93,14 @@ for item in jsonForm:
     featSet['named_entity'] = entCount
     features.append(featSet)
     # display
-    print(featSet)
+    counter += 1
+    num = counter / (len(jsonForm)/20)
+    print('\r0%' + ('=' * int(num)) + ('_' * int(20-num)) + '100% -> ' + str(num/len(jsonForm)) + '%', end='', flush=True)
+
+print('\nfeatures have been generated')
+print('time elapsed: ' + str(time.time() - start))
 
 # print to file
-with open(args.output, 'wb') as file:
+with open(' '.join(args.output), 'wb') as file:
     pickle.dump(features, file)
 
