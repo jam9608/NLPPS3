@@ -8,12 +8,11 @@ import threading
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input', type=str, help='The input text file, training or test', nargs='+')
-parser.add_argument('-o', '--output', type=str, help='The output binary file feature set', nargs='+')
 parser.add_argument('-a', '--array', type=str, help='The output binary feature array', nargs='+')
 args = parser.parse_args()
 
 
-if args.input is None or args.output is None or args.array is None:
+if args.input is None or args.array is None:
     print('Please specify all required files')
     exit()
 
@@ -123,10 +122,6 @@ for item in features:
     D2.append([item['id'], item['sentence'], item['topic'], item['genre'], item['polarity'], item['adjective_count'],
     item['noun_count'], item['verb_count'], item['punctuation_count'], item['number_count'], item['sentence_length'],
     int(item['start_with_personal_pronoun']), item['word_count'], item['named_entity']])
-
-# print set to file
-with open(' '.join(args.output), 'wb') as file:
-    pickle.dump(features, file)
 
 # print array file array
 with open(' '.join(args.array), 'wb') as file:

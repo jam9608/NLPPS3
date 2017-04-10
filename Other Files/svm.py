@@ -8,7 +8,7 @@ with open(r'PS3_training_data_features.bin', 'rb') as file:
 
 ###################################WORD COUNT CODE#############################
 i = 0
-with open(r"C:\Users\John\PS3_training_data.txt") as file:
+with open(r"PS3_training_data.txt") as file:
     training = file.readlines()
 
 trainingData = ["" for x in range(2564)]
@@ -53,7 +53,7 @@ trainingFeatures = D2[:2000]
 testFeatures = D2[2000:]
 
 i = 0
-with open(r"C:\Users\John\PS3_training_data.txt") as file:
+with open(r"PS3_training_data.txt") as file:
     training = file.readlines()
 
 #dataset = numpy.zeros((2564,3),numpy.str)
