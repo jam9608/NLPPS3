@@ -57,6 +57,7 @@ D4 = []
 i = 0
 for item in features:
     newfeaturelist = numpy.array([item['adjective_count'], item['noun_count'], item['verb_count'], item['punctuation_count'], item['number_count'], item['sentence_length'], item['start_with_personal_pronoun'], item['word_count'], item['named_entity']])
+    print(newfeaturelist.shape)
     newfeaturelist1 = numpy.concatenate((newfeaturelist, [predicted1[i]]),axis=0)
     D2.append(newfeaturelist1) 
     newfeaturelist2 = numpy.concatenate((newfeaturelist, predicted2[i]),axis=0)
