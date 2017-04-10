@@ -28,6 +28,8 @@ trainfeatures = []
 with open(r'OUTPUT_BINARY_FEATURE_ARRAY_TRAINING.bin', 'rb') as file:
     trainfeatures = pickle.load(file)
 
+print("Loaded features from files")
+
 # feature array syntax:
 # 0:id, 1:sentence, 2:topic, 3:genre, 4:polarity, 5:adjective_count, 6:noun_count, 7:verb_count, 8:punctuation_count,
 # 9:number_count, 10:sentence_length, 11:start_with_personal_pronoun, 12:word_count, 13:named_entity
@@ -61,6 +63,8 @@ predicted1 = svc1.decision_function(X_train_tf)
 predicted2 = svc2.decision_function(X_train_tf)
 predicted3 = svc3.decision_function(X_train_tf)
 
+print("Created word count vectors")
+
 ##############################################################################
 
 ##arrayify our featuresets
@@ -78,8 +82,7 @@ for item in trainfeatures:
     newfeaturelist3 = numpy.concatenate((newfeaturelist, predicted3[i]),axis=0)
     D4.append(newfeaturelist3)
     i+=1
-    
-    
+
 GenreTarget = numpy.array(trainingTargetGenre)
 GenreFeatureset = numpy.array(D2)
 PosTarget = numpy.array(trainingTargetPositivity)
@@ -90,6 +93,9 @@ EmFeatureset = numpy.array(D4)
 GenreClassifier = svm.SVC(kernel='linear', C=C).fit(GenreFeatureset, GenreTarget)
 PolarityClassifier = svm.SVC(kernel='linear', C=C).fit(PosFeatureset, PosTarget)
 TopicClassifier = svm.SVC(kernel='linear', C=C).fit(EmFeatureset, EmTarget)
+
+print("Created the modified vectors with word count and feature set")
+print("Classifier build from training data")
 
 ##classifiers complete, lets get to our test data
 i = 0
@@ -123,8 +129,6 @@ for item in testfeatures:
     newfeaturelist3 = numpy.concatenate((newfeaturelist, out3[i]),axis=0)
     D7.append(newfeaturelist3)
     i+=1
-    
-    
 
 Featureset1 = numpy.array(D5)
 Featureset2 = numpy.array(D6)
@@ -134,18 +138,15 @@ GenrePredictions = GenreClassifier.predict(Featureset1)
 PolarityPredictions = PolarityClassifier.predict(Featureset2)
 EmotionPredictions = TopicClassifier.predict(Featureset3)
 
+print("Vectors for test data made successfully")
+
 with open(str(args.output[0]),'w') as file:
     i = 0
     for item in testData:
         file.write(str(i)+ '\t' + str(item) + '\t' + str(PolarityPredictions[i]) + '\t' + str(EmotionPredictions[i]) + '\t' + str(GenrePredictions[i]) + '\t\n' )
         i+=1
-'''
-array = []
-for item in trainfeatures:
-    print(item)
-    array.append(item[2])
-print_metrics(array, array)
-'''
+
+print("Output file made correctly")
 
 ########################################################################################################################
 ##don't mind me just generating some test stuff
