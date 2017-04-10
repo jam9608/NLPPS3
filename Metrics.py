@@ -21,6 +21,7 @@ def print_metrics(reference, tagged, tags = None):
 	cm = ConfusionMatrix(reference, tagged)
 	print(cm)
 	
+	print("Overall metrics ====")
 	accuracy = float(sum(true_positives.values()))/len(tagged)
 	precision = float(sum(true_positives.values()))/(sum(true_positives.values()) + sum(false_positives.values()))
 	recall = float(sum(true_positives.values()))/(sum(true_positives.values()) + sum(false_negatives.values()))
@@ -31,8 +32,9 @@ def print_metrics(reference, tagged, tags = None):
 	print("F-score: " + str(fscore))
 	print()
 
+	print("Metrics per tag ====")
 	for tag in tags:
-		print(tag + "----")
+		print("Tag: " + tag)
 		if true_positives[tag] == 0:
 			accuracy = 0
 			precision = 0
