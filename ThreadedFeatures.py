@@ -117,7 +117,7 @@ print('\nall features have been generated')
 print('time elapsed: ' + str(time.time() - start))
 
 # make set an array
-D2 = [[]]
+D2 = []
 for item in features:
     D2.append([item['id'], item['sentence'], item['topic'], item['genre'], item['polarity'], item['adjective_count'],
     item['noun_count'], item['verb_count'], item['punctuation_count'], item['number_count'], item['sentence_length'],

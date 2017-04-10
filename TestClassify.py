@@ -28,13 +28,22 @@ with open(r'OUTPUT_BINARY_FEATURE_ARRAY_TRAINING.bin', 'rb') as file:
 # 0:id, 1:sentence, 2:topic, 3:genre, 4:polarity, 5:adjective_count, 6:noun_count, 7:verb_count, 8:punctuation_count,
 # 9:number_count, 10:sentence_length, 11:start_with_personal_pronoun, 12:word_count, 13:named_entity
 
+# Metrics Usage:
+'''
+array = []
+for item in trainfeatures:
+    print(item)
+    array.append(item[2])
+print_metrics(array, array)
+'''
+
 ########################################################################################################################
 # task 1
 
 print('Task 1 Begin')
 
 print('Task 1 Results:')
-print_metrics()
+#print_metrics()
 
 ########################################################################################################################
 # task 2
@@ -42,7 +51,7 @@ print_metrics()
 print('Task 2 Begin')
 
 print('Task 2 Results:')
-print_metrics()
+#print_metrics()
 
 ########################################################################################################################
 # task 3
@@ -50,7 +59,7 @@ print_metrics()
 print('Task 3 Begin')
 
 print('Task 3 Results:')
-print_metrics()
+#print_metrics()
 
 ########################################################################################################################
 # print output text file
