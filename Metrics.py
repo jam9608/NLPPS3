@@ -39,7 +39,7 @@ def print_metrics(reference, tagged, tags = None):
 			recall = 0
 			fscore = 0
 		else:
-			accuracy = float(true_positives[tag])/len(tagged)
+			accuracy = float(true_positives[tag])/reference.count(tag)
 			precision = float(true_positives[tag])/(true_positives[tag] + false_positives[tag])
 			recall = float(true_positives[tag])/(true_positives[tag] + false_negatives[tag])
 			fscore = float(2 * precision * recall)/(precision + recall)
