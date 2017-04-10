@@ -1,9 +1,10 @@
 import pickle
 import argparse
-import re
 import numpy
 from sklearn import svm
 from Metrics import print_metrics
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfTransformer
 
 
 parser = argparse.ArgumentParser()
@@ -30,7 +31,6 @@ with open(r'OUTPUT_BINARY_FEATURE_ARRAY_TRAINING.bin', 'rb') as file:
 # feature array syntax:
 # 0:id, 1:sentence, 2:topic, 3:genre, 4:polarity, 5:adjective_count, 6:noun_count, 7:verb_count, 8:punctuation_count,
 # 9:number_count, 10:sentence_length, 11:start_with_personal_pronoun, 12:word_count, 13:named_entity
-
 # Metrics Usage:
     
 ###################################WORD COUNT CODE#############################
@@ -48,11 +48,8 @@ for item in trainfeatures:
     
     i+=1
 
-from sklearn.feature_extraction.text import CountVectorizer
 count_vect = CountVectorizer()
 X_train_counts = count_vect.fit_transform(trainingData)
-
-from sklearn.feature_extraction.text import TfidfTransformer
 tf_transformer = TfidfTransformer(use_idf=False).fit(X_train_counts)
 X_train_tf = tf_transformer.transform(X_train_counts)
 
@@ -151,35 +148,28 @@ print_metrics(array, array)
 '''
 
 ########################################################################################################################
+##don't mind me just generating some test stuff
+
+########################################################################################################################
 # task 1
 
-print('Task 1 Begin')
-
 print('Task 1 Results:')
-#print_metrics()
+gpred = GenreClassifier.predict(GenreFeatureset)
+print_metrics(gpred.tolist(), GenreTarget.tolist())
 
 ########################################################################################################################
 # task 2
 
-print('Task 2 Begin')
-
 print('Task 2 Results:')
-#print_metrics()
+ppred = PolarityClassifier.predict(PosFeatureset)
+print_metrics(ppred.tolist(), PosTarget.tolist())
 
 ########################################################################################################################
 # task 3
 
-print('Task 3 Begin')
-
 print('Task 3 Results:')
-#print_metrics()
+epred = TopicClassifier.predict(EmFeatureset)
+print_metrics(epred.tolist(), EmTarget.tolist())
 
 ########################################################################################################################
-# print output text file
 
-testResults = []
-#with open(' '.join(args.output), 'w') as out:
-#    for item in testResults:
-#        out.write(testResults[0] + '\t' + testResults[1] + '\t' + testResults[4] + '\t' + testResults[2]
-#                  + '\t' + testResults[3] + '\n')
-#

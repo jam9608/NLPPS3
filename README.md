@@ -2,7 +2,7 @@
 
 Jared Wagner
 Ian Gilbert
-John Murry
+John Murray
 
 1. To create test results first run the test code through the ThreadedFeatures.py script.
     This script takes command line parameters of the input text file and the output file names
