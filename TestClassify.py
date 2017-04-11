@@ -49,11 +49,33 @@ for item in trainfeatures:
     trainingTargetEmotion[i] = item[2]
     
     i+=1
+i=0
+testData = ["" for x in range(len(testfeatures))]
+testTargetGenre = ["" for x in range(len(testfeatures))]
+testTargetPositivity = ["" for x in range(len(testfeatures))]
+testTargetEmotion = ["" for x in range(len(testfeatures))]
+
+for item in testfeatures:
+    testData[i] = item[1]
+    testTargetGenre[i] = item[3]
+    testTargetPositivity[i] = item[4]
+    testTargetEmotion[i] = item[2]
+    
+    i+=1
+    
+alldata = numpy.concatenate((numpy.array(trainingData), numpy.array(testData)))
+
 
 count_vect = CountVectorizer()
-X_train_counts = count_vect.fit_transform(trainingData)
-tf_transformer = TfidfTransformer(use_idf=False).fit(X_train_counts)
+X_train_counts = count_vect.fit_transform(alldata)
+tf_transformer = TfidfTransformer(use_idf=True).fit(X_train_counts)
 X_train_tf = tf_transformer.transform(X_train_counts)
+print(X_train_tf.shape)
+Y_train_tf = X_train_tf[len(trainfeatures):]
+X_train_tf = X_train_tf[:len(trainfeatures)]
+print(X_train_tf.shape)
+
+print(Y_train_tf.shape)
 
 C=1.0
 svc1 = svm.SVC(kernel='linear', C=C).fit(X_train_tf, trainingTargetGenre)
@@ -98,18 +120,7 @@ print("Created the modified vectors with word count and feature set")
 print("Classifier build from training data")
 
 ##classifiers complete, lets get to our test data
-i = 0
-testData = ["" for x in range(len(testfeatures))]
-for item in testfeatures:
-    testData[i] = item[1]
-    i+=1
 
-count_vect = CountVectorizer()
-Y_train_counts = count_vect.fit_transform(testData)
-
-from sklearn.feature_extraction.text import TfidfTransformer
-tf_transformer = TfidfTransformer(use_idf=False).fit(Y_train_counts)
-Y_train_tf = tf_transformer.transform(Y_train_counts)
 
 out1 = svc1.decision_function(Y_train_tf)
 out2 = svc2.decision_function(Y_train_tf)
@@ -155,22 +166,22 @@ print("Output file made correctly")
 # task 1
 
 print('Task 1 Results:')
-gpred = GenreClassifier.predict(GenreFeatureset)
-print_metrics(gpred.tolist(), GenreTarget.tolist())
+gpred = GenreClassifier.predict(Featureset1)
+print_metrics(gpred.tolist(), testTargetGenre)
 
 ########################################################################################################################
 # task 2
 
 print('Task 2 Results:')
-ppred = PolarityClassifier.predict(PosFeatureset)
-print_metrics(ppred.tolist(), PosTarget.tolist())
+ppred = PolarityClassifier.predict(Featureset2)
+print_metrics(ppred.tolist(), testTargetPositivity)
 
 ########################################################################################################################
 # task 3
 
 print('Task 3 Results:')
-epred = TopicClassifier.predict(EmFeatureset)
-print_metrics(epred.tolist(), EmTarget.tolist())
+epred = TopicClassifier.predict(Featureset3)
+print_metrics(epred.tolist(), testTargetEmotion)
 
 ########################################################################################################################
 
