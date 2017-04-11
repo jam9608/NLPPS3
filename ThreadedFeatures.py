@@ -29,7 +29,7 @@ with open(' '.join(args.input), 'r') as file:
         obj['sentence'] = temp[1]
         obj['polarity'] = temp[2]
         obj['topic'] = temp[3]
-        obj['genre'] = temp[4]
+        obj['genre'] = temp[4].strip('\n')
         jsonForm.append(obj)
 
 # store all the features
