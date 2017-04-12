@@ -152,10 +152,15 @@ EmotionPredictions = TopicClassifier.predict(Featureset3)
 print("Vectors for test data made successfully")
 
 with open(str(args.output[0]),'w') as file:
-    i = 0
-    for item in testData:
-        file.write(str(i)+ '\t' + str(item) + '\t' + str(PolarityPredictions[i]) + '\t' + str(EmotionPredictions[i]) + '\t' + str(GenrePredictions[i]) + '\t\n' )
-        i+=1
+    temp = testfeatures.copy()
+    for i in range(len(testfeatures)):
+        temp[i][0] = int(temp[i][0])
+        temp[i][2] = EmotionPredictions[i]
+        temp[i][3] = GenrePredictions[i]
+        temp[i][4] = PolarityPredictions[i]
+    organized = sorted(temp)
+    for item in organized:
+        file.write(str(item[0]) + '\t' + str(item[1]) + '\t' + str(item[4]) + '\t' + str(item[2]) + '\t' + str(item[3]) + '\t\n')
 
 print("Output file made correctly")
 
